@@ -38,6 +38,8 @@ import android.transition.Slide;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +50,7 @@ import android.widget.TextView;
 
 import com.example.xyzreader.R;
 import com.example.xyzreader.data.ArticleLoader;
+import com.example.xyzreader.data.ItemsContract;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
@@ -96,8 +99,6 @@ public class ArticleDetailFragment extends Fragment implements
         if (getArguments().containsKey(ARG_ITEM_ID)) {
             mItemId = getArguments().getLong(ARG_ITEM_ID);
         }
-
-
         setHasOptionsMenu(true);
     }
 
@@ -119,9 +120,16 @@ public class ArticleDetailFragment extends Fragment implements
             Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_article_detail, container, false);
         mToolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
-        ((ArticleDetailActivity)getActivity()).setSupportActionBar(mToolbar);
-        ((ArticleDetailActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ((ArticleDetailActivity)getActivity()).getSupportActionBar().setTitle(null);
+
+        if (getActivity().getClass().getSimpleName().equals("ArticleDetailActivity") ){
+            ((ArticleDetailActivity) getActivity()).setSupportActionBar(mToolbar);
+            ((ArticleDetailActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            ((ArticleDetailActivity) getActivity()).getSupportActionBar().setTitle(null);
+        }else{
+            ((ArticleListActivity) getActivity()).setSupportActionBar(mToolbar);
+            ((ArticleListActivity) getActivity()).getSupportActionBar().setTitle(null);
+
+        }
 
 
         mImageView = (ImageView) mRootView.findViewById(R.id.backdrop);
@@ -221,15 +229,28 @@ public class ArticleDetailFragment extends Fragment implements
         bindViews();
     }
 
+   @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+
+        if (getActivity().getClass().getSimpleName().equals("ArticleListActivity")) {
+            inflater.inflate(R.menu.fragment_menu, menu);
+        }
+       super.onCreateOptionsMenu(menu, inflater);
+    }
 
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        super.onOptionsItemSelected(item);
+        //super.onOptionsItemSelected(item);
         switch (item.getItemId()) {
         // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 getActivity().supportFinishAfterTransition();
+                break;
+            case R.id.full_screen:
+                Intent i = new Intent(Intent.ACTION_VIEW,
+                        ItemsContract.Items.buildItemUri(mItemId));
+                getActivity().startActivityForResult(i,ArticleListActivity.REQUEST_CODE);
 
         }
         return true;

@@ -1,6 +1,7 @@
 package com.example.xyzreader.ui;
 
 
+import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -21,6 +22,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -43,6 +45,8 @@ public class ArticleListActivity extends AppCompatActivity implements
 
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
+    private boolean mTwoPane;
+    public static final int REQUEST_CODE = 1;
 
 
     @Override
@@ -56,6 +60,10 @@ public class ArticleListActivity extends AppCompatActivity implements
         if (savedInstanceState == null) {
             refresh();
         }
+        if (findViewById(R.id.detail_container)!=null)
+            mTwoPane = true;
+        else
+            mTwoPane=false;
     }
 
     private void refresh() {
@@ -107,6 +115,7 @@ public class ArticleListActivity extends AppCompatActivity implements
         mRecyclerView.setLayoutManager(sglm);
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL_LIST));
 
+
     }
 
     @Override
@@ -135,15 +144,22 @@ public class ArticleListActivity extends AppCompatActivity implements
                 @Override
                 public void onClick(View view) {
 
+                    if (mTwoPane){
+                        ArticleDetailFragment fragment = ArticleDetailFragment.newInstance(getItemId(vh.getAdapterPosition()));
+                        getSupportFragmentManager().beginTransaction().replace(R.id.detail_container,fragment).commit();
+
+                    }else {
                         Intent i = new Intent(Intent.ACTION_VIEW,
                                 ItemsContract.Items.buildItemUri(getItemId(vh.getAdapterPosition())));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             Bundle bundle = ActivityOptions.makeSceneTransitionAnimation(ArticleListActivity.this).toBundle();
-                            startActivity(i, bundle);
-                        }else
-                        {
-                            startActivity(i);
+                           // startActivity(i, bundle);
+                            startActivityForResult(i,REQUEST_CODE,bundle);
+                        } else {
+                            startActivityForResult(i, REQUEST_CODE);
                         }
+
+                    }
 
 
                 }
@@ -187,6 +203,21 @@ public class ArticleListActivity extends AppCompatActivity implements
 
             titleView = (TextView) view.findViewById(R.id.article_title);
             subtitleView = (TextView) view.findViewById(R.id.article_subtitle);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE){
+            if (resultCode == RESULT_OK){
+                long id = data.getLongExtra(ArticleDetailActivity.articleId,1);
+                if (mTwoPane) {
+                    ArticleDetailFragment fragment = ArticleDetailFragment.newInstance(id);
+                    getSupportFragmentManager().beginTransaction().replace(R.id.detail_container, fragment).commit();
+                }
+
+            }
         }
     }
 }

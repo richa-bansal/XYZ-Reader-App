@@ -9,5 +9,6 @@
     <string name="shared_element_transition">shared_element_transition</string>
 
     <string name="up">Up</string>
+    <string name="full_screen">FullScreen</string>
 
 </resources>

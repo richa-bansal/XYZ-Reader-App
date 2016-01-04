@@ -5,6 +5,8 @@ package com.example.xyzreader.ui;
 
 
 
+import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -24,6 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.transition.Slide;
 import android.transition.Transition;
 import android.transition.TransitionInflater;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -47,6 +50,8 @@ public class ArticleDetailActivity extends AppCompatActivity
 
     private ViewPager mPager;
     private MyPagerAdapter mPagerAdapter;
+    public static final String articleId = "ArticleId";
+
 
 
     @Override
@@ -106,8 +111,16 @@ public class ArticleDetailActivity extends AppCompatActivity
         mPagerAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onBackPressed() {
 
-
+        Intent i = new Intent();
+        int pos = mPager.getCurrentItem();
+        mCursor.moveToPosition(pos);
+        i.putExtra(articleId, mCursor.getLong(ArticleLoader.Query._ID) );
+        setResult(RESULT_OK,i);
+        super.onBackPressed();
+    }
 
     private class MyPagerAdapter extends FragmentStatePagerAdapter {
         public MyPagerAdapter(FragmentManager fm) {

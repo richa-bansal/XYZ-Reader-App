@@ -3,8 +3,8 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/list_side_margin"
         android:layout_marginRight="@dimen/list_side_margin"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginTop="@dimen/list_item_top_margin"
+        android:layout_marginBottom="@dimen/list_item_bottom_margin"
         android:orientation="horizontal"
         >
 
@@ -29,11 +29,11 @@
                 style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="#000"
+                android:textColor="@color/Black"
                 android:alpha=".87"
                 android:fontFamily="sans-serif"
                 android:paddingLeft="16dp"
-                android:paddingBottom="4dp"
+                android:paddingBottom="@dimen/margin_between_title_subtitle"
                 android:ellipsize="end"
                 android:maxLines="2" />
 
@@ -43,7 +43,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingLeft="16dp"
-                android:textColor="#000"
+                android:textColor="@color/Black"
                 android:alpha=".54"
                 android:maxLines="1"
                 android:singleLine="true"

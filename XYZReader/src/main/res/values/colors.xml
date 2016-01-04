@@ -22,4 +22,9 @@
     <color name="Orange800">#EF6C00</color>
     <color name="Accent">#FF9800</color>
     <color name="ltgray">#ffe0e0e0</color>
+    <color name="Black">#000</color>
+    <color name="White">#fff</color>
+    <color name="OffWhite">#8fff</color>
+    <color name="DarkGray">#333</color>
+    <color name="WhiteSmoke">#F5F5F5</color>
 </resources>

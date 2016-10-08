@@ -15,6 +15,10 @@ Items that were changed:
 - Ensured that the App had a consistent color theme defined in styles.xml.
 - Ensured that the App used fonts that are either the Android defaults, are complementary, and aren't otherwise distracting.
 
+##Screenshots:
+
+![GitHub Logo](device-xyzreader_pictures.jpeg)
+
 ##Why this Project?
 This project gave an opportunity to improve an app’s design, a vital skill for building apps users love. It also replicated a common developer task of updating and changing an app's design as new standards are released.
 
